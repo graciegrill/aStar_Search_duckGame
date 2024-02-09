@@ -45,6 +45,8 @@ public class duck {
         this.flagCap = flagCap;
     }
 
+    
+
 
     
     
