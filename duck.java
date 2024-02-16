@@ -1,17 +1,17 @@
-public class duck {
+public class Duck {
 
     private int pos;
     private int energy;
     private Boolean flagCap;
     
-    public duck(){
+    public Duck(){
         this.pos = 0;
         this.energy = 0; 
         this.flagCap = true;
     
     }
 
-    public duck(int pos, int energy, Boolean flagCap){
+    public Duck(int pos, int energy, Boolean flagCap){
         this.pos = pos;
         this.energy = energy;
         this.flagCap = flagCap;
@@ -44,6 +44,16 @@ public class duck {
     public void setFlagCap(Boolean flagCap) {
         this.flagCap = flagCap;
     }
+
+    @Override
+    public String toString() {
+        return "{" +
+            " pos='" + getPos() + "'" +
+            ", energy='" + getEnergy() + "'" +
+            ", flagCap='" + isFlagCap() + "'" +
+            "}";
+    }
+    
 
     
 
