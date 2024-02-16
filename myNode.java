@@ -1,8 +1,4 @@
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.List;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class myNode {
     
@@ -53,8 +49,8 @@ public class myNode {
     }
 
     public Boolean equals(myNode n1){
-        n1 = new myNode(ducks, parent, pastCost)
-        return 
+        n1 = new myNode(ducks, parent, pastCost);
+        return getDucks().equals(n1.getDucks()) && getParent() == n1.getParent() && getPastCost() == n1.getPastCost();
     }
 
 
