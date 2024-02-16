@@ -6,8 +6,19 @@ public class firstDraft{
 
 
     
-    public void determineSomething(){
+    public Boolean searchFunction(input){
+        // take input use first number to create number of duck objects
+        // rest of input for duck
+        int numberOf = input[0];
 
+        // for loop for creating duck objects
+        for (i =1; i<numberOf; i++){
+            ducks(setPos) = input[1];
+            ducks(setEnergy) = input[3]
+            if input[2] = i{
+                ducks(setFlagCap) = true;
+            }
+        }
     }
 
 
