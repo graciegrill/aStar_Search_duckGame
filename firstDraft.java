@@ -1,6 +1,7 @@
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.List;
+import java.util.PriorityQueue;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -8,7 +9,7 @@ public class firstDraft{
 
 
     
-    public Boolean search(int numDucks, int numPos, int flagDuck, int maxEnergy){
+    public myNode search(int numDucks, int numPos, int flagDuck, int maxEnergy){
         ArrayList<Duck> allDucks = new ArrayList<Duck>();
         int i = 0;
         Duck newDuck = new Duck(0, maxEnergy, false);
@@ -21,8 +22,13 @@ public class firstDraft{
                 allDucks.add(goalDuck);
             }
             i++;
-        }   
-        return true;
+        }
+        int cost = 0;
+        myNode initNode = new myNode(allDucks, 0, cost);
+        PriorityQueue frontier = new PriorityQueue<myNode>();
+        
+
+        return initNode;
 
     }
 

@@ -4,11 +4,19 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class node {
+public class myNode {
     
     private ArrayList<Duck> ducks;
-    private node parent;
+    private int parent;
     private int pastCost;
+
+
+    public myNode(ArrayList<Duck> ducks, int parent, int pastCost) {
+        this.ducks = ducks;
+        this.parent = parent;
+        this.pastCost = pastCost;
+    }
+    
 
     public ArrayList<Duck> getDucks() {
         return this.ducks;
@@ -18,11 +26,11 @@ public class node {
         this.ducks = ducks;
     }
 
-    public node getParent() {
+    public int getParent() {
         return this.parent;
     }
 
-    public void setParent(node parent) {
+    public void setParent(int parent) {
         this.parent = parent;
     }
 
@@ -43,6 +51,12 @@ public class node {
             ", pastCost='" + getPastCost() + "'" +
             "}";
     }
+
+    public Boolean equals(myNode n1){
+        n1 = new myNode(ducks, parent, pastCost)
+        return 
+    }
+
 
 
 

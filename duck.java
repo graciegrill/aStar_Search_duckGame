@@ -53,6 +53,11 @@ public class Duck {
             ", flagCap='" + isFlagCap() + "'" +
             "}";
     }
+
+    public boolean equals(Duck d1){
+        d1 = new Duck();
+        return getEnergy() == d1.getEnergy() && getPos() == d1.getPos() && getFlagCap() == d1.getFlagCap();
+    }
     
 
     
