@@ -25,8 +25,11 @@ public class firstDraft{
         }
         int cost = 0;
         myNode initNode = new myNode(allDucks, 0, cost);
-        PriorityQueue frontier = new PriorityQueue<myNode>();
-        
+        ArrayList<Duck> goalDucks = new ArrayList<Duck>();
+        myNode goalNode = new myNode();
+        Queue<myNode> frontier = new PriorityQueue<myNode>();
+        frontier.add(initNode);
+
 
         return initNode;
 
