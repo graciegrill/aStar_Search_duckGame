@@ -3,18 +3,30 @@ public class Duck {
     private int pos;
     private int energy;
     private Boolean flagCap;
+    private int maxEnergy;
+
+    public int getMaxEnergy() {
+        return this.maxEnergy;
+    }
+
+    public void setMaxEnergy(int maxEnergy) {
+        this.maxEnergy = maxEnergy;
+    }
     
     public Duck(){
         this.pos = 0;
-        this.energy = 0; 
+        this.energy = 0;
+        this.maxEnergy = 0; 
         this.flagCap = true;
     
     }
 
-    public Duck(int pos, int energy, Boolean flagCap){
+    public Duck(int pos, int energy, int maxEnergy, Boolean flagCap){
         this.pos = pos;
         this.energy = energy;
         this.flagCap = flagCap;
+        this.maxEnergy = maxEnergy;
+
     }
 
     public int getPos() {
@@ -48,19 +60,21 @@ public class Duck {
     public void moveDuck(String direction){
         int numMoves = (int)direction.charAt(2);
         if(direction.startsWith("L")&& this.energy>=numMoves){
-            this.pos = this.pos + (int) direction.charAt(2);
+            this.pos = this.pos + numMoves;
             this.energy = this.energy - numMoves;
         }
         else if(direction.startsWith("R")&& this.energy>=numMoves){
-            this.pos = this.pos + (int) direction.charAt(2);
+            this.pos = this.pos + numMoves;
             this.energy = this.energy - numMoves;
 
         }
     }
 
     public void transferEnergy(Duck d0){
-        d0.setEnergy(d0.getEnergy()+this.energy);
-        this.energy = 0;
+        if(this.energy>0 && d0.getEnergy() != d0.getMaxEnergy()){
+            d0.setEnergy(d0.getEnergy()+this.energy);
+            this.energy = 0;
+        }
     }
 
     @Override
