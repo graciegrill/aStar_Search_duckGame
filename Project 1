@@ -1,0 +1,54 @@
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Scanner;
+
+public class firstDraft {
+
+    public static void main(String[] args) {
+        System.out.println("Enter your input: ");
+        Scanner in = new Scanner(System.in);
+        String[] input = in.nextLine().split(" ");
+        in.close();
+        searchFunction(input);
+    }
+
+    public static void searchFunction(String[] input) {
+        int numberOfDucks = Integer.parseInt(input[0]);
+        Duck[] ducks = new Duck[numberOfDucks];
+        
+        // Create Duck objects
+        for (int i = 0; i < numberOfDucks; i++) {
+            int pos = Integer.parseInt(input[1 + i * 3]);
+            int energy = Integer.parseInt(input[2 + i * 3]);
+            boolean flagCap = Integer.parseInt(input[3 + i * 3]) == i + 1;
+            ducks[i] = new Duck(pos, energy, flagCap);
+        }
+
+        // Perform BFS
+        Queue<Duck> queue = new LinkedList<>();
+        boolean[] visited = new boolean[numberOfDucks];
+        queue.add(ducks[0]);
+        visited[0] = true;
+
+        while (!queue.isEmpty()) {
+            Duck currentDuck = queue.poll();
+            // Process current duck
+            
+            // Check if the flag is back at the start
+            if (currentDuck.isFlagCap()) {
+                System.out.println("Flag found!");
+                return;
+            }
+
+            // Add adjacent ducks to the queue
+            for (int i = 0; i < numberOfDucks; i++) {
+                if (!visited[i] && Math.abs(ducks[i].getPos() - currentDuck.getPos()) <= currentDuck.getEnergy()) {
+                    queue.add(ducks[i]);
+                    visited[i] = true;
+                }
+            }
+        }
+
+        System.out.println("Flag not found!");
+    }
+}
