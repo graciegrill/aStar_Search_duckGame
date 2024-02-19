@@ -57,23 +57,22 @@ public class Duck {
         this.flagCap = flagCap;
     }
 
-    public void moveDuck(String direction){
-        int numMoves = (int)direction.charAt(2);
-        if(direction.startsWith("L")&& this.energy>=numMoves){
-            this.pos = this.pos + numMoves;
-            this.energy = this.energy - numMoves;
+    public void moveDuck(int direction){ //one move at a time
+        if(direction == 1 && this.energy>=1){
+            this.pos = this.pos + 1;
+            this.energy = this.energy - 1;
         }
-        else if(direction.startsWith("R")&& this.energy>=numMoves){
-            this.pos = this.pos + numMoves;
-            this.energy = this.energy - numMoves;
+        else if(direction == -1 && this.energy>=1){
+            this.pos = this.pos + 1;
+            this.energy = this.energy - 1;
 
         }
     }
 
-    public void transferEnergy(Duck d0){
+    public void transferEnergy(Duck d0){ // one unit at a time
         if(this.energy>0 && d0.getEnergy() != d0.getMaxEnergy()){
-            d0.setEnergy(d0.getEnergy()+this.energy);
-            this.energy = 0;
+            d0.setEnergy(d0.getEnergy()+1);
+            this.energy = this.energy - 1;
         }
     }
 

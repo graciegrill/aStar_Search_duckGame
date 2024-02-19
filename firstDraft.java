@@ -6,14 +6,29 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class firstDraft{
+    ArrayList<myNode> reached = new ArrayList<myNode>();
+
+
+    /*
+     * Need to fill in 
+     * A duck can:
+     *  -move left once
+     *  -move right once
+     *  -transfer 1 energy to duckAt(i+1)
+     *  -transfer 1 energy to duckAt(i-1)
+     */
+    public myNode expand(Duck sampleDuck, Duck targetDuck){
+        return new myNode();
+    }
+
 
 
     
     public myNode search(int numDucks, int numPos, int flagDuck, int maxEnergy){
         ArrayList<Duck> allDucks = new ArrayList<Duck>();
         int i = 0;
-        Duck newDuck = new Duck(0, maxEnergy, false);
-        Duck goalDuck = new Duck(0, maxEnergy, true);
+        Duck newDuck = new Duck(0, 0 , maxEnergy, false);
+        Duck goalDuck = new Duck(0, 0, maxEnergy, true);
         while (i <numDucks){
             if(i!=flagDuck){
                 allDucks.add(newDuck);
@@ -25,18 +40,19 @@ public class firstDraft{
         }
         int cost = 0;
         myNode initNode = new myNode(allDucks, null, cost); // node <--Node(problem.initial)
-        ArrayList<Duck> goalDucks = new ArrayList<Duck>();
-        myNode goalNode = new myNode();
-        //if problem is goal (node.state) then return node
+        if (initNode.isGoalNode(flagDuck, numPos)){
+            return initNode;
+            
+        }
         Queue<myNode> frontier = new PriorityQueue<myNode>(); //frontier (FIFO queue) with node as element
+        reached.add(initNode);
         //reached<-- problem.initial
         frontier.add(initNode);
         while(!frontier.isEmpty()){
             myNode newNode = frontier.peek();
+
             
         }
-
-
         return initNode;
 
     }

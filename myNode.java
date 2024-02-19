@@ -44,6 +44,15 @@ public class myNode {
         this.pastCost = pastCost;
     }
 
+    public boolean isGoalNode(int flagCap, int totalPositions){
+        if(this.ducks.get(flagCap).getPos() == totalPositions){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
 
     @Override
     public String toString() {
