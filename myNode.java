@@ -3,14 +3,20 @@ import java.util.ArrayList;
 public class myNode {
     
     private ArrayList<Duck> ducks;
-    private int parent;
+    private myNode parent;
     private int pastCost;
 
 
-    public myNode(ArrayList<Duck> ducks, int parent, int pastCost) {
+    public myNode(ArrayList<Duck> ducks, myNode parent, int pastCost) {
         this.ducks = ducks;
-        this.parent = parent;
+        this.parent = parent ;
         this.pastCost = pastCost;
+    }
+
+    public myNode(){
+        this.ducks = new ArrayList<Duck>();
+        this.parent = null;
+        this.pastCost = 0;
     }
     
 
@@ -22,11 +28,11 @@ public class myNode {
         this.ducks = ducks;
     }
 
-    public int getParent() {
+    public myNode getParent() {
         return this.parent;
     }
 
-    public void setParent(int parent) {
+    public void setParent(myNode parent) {
         this.parent = parent;
     }
 

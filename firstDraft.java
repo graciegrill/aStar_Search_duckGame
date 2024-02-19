@@ -24,11 +24,17 @@ public class firstDraft{
             i++;
         }
         int cost = 0;
-        myNode initNode = new myNode(allDucks, 0, cost);
+        myNode initNode = new myNode(allDucks, null, cost); // node <--Node(problem.initial)
         ArrayList<Duck> goalDucks = new ArrayList<Duck>();
         myNode goalNode = new myNode();
-        Queue<myNode> frontier = new PriorityQueue<myNode>();
+        //if problem is goal (node.state) then return node
+        Queue<myNode> frontier = new PriorityQueue<myNode>(); //frontier (FIFO queue) with node as element
+        //reached<-- problem.initial
         frontier.add(initNode);
+        while(!frontier.isEmpty()){
+            myNode newNode = frontier.peek();
+            
+        }
 
 
         return initNode;
