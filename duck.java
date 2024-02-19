@@ -45,6 +45,24 @@ public class Duck {
         this.flagCap = flagCap;
     }
 
+    public void moveDuck(String direction){
+        int numMoves = (int)direction.charAt(2);
+        if(direction.startsWith("L")&& this.energy>=numMoves){
+            this.pos = this.pos + (int) direction.charAt(2);
+            this.energy = this.energy - numMoves;
+        }
+        else if(direction.startsWith("R")&& this.energy>=numMoves){
+            this.pos = this.pos + (int) direction.charAt(2);
+            this.energy = this.energy - numMoves;
+
+        }
+    }
+
+    public void transferEnergy(Duck d0){
+        d0.setEnergy(d0.getEnergy()+this.energy);
+        this.energy = 0;
+    }
+
     @Override
     public String toString() {
         return "{" +
