@@ -6,25 +6,9 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class firstDraft{
-    ArrayList<myNode> reached = new ArrayList<myNode>();
-
-
-    /*
-     * Need to fill in 
-     * A duck can:
-     *  -move left once
-     *  -move right once
-     *  -transfer 1 energy to duckAt(i+1)
-     *  -transfer 1 energy to duckAt(i-1)
-     */
-    public myNode expand(Duck sampleDuck, Duck targetDuck){
-        return new myNode();
-    }
-
-
-
     
-    public myNode search(int numDucks, int numPos, int flagDuck, int maxEnergy){
+    public static myNode search(int numDucks, int numPos, int flagDuck, int maxEnergy){
+        ArrayList<myNode> reached = new ArrayList<myNode>();
         ArrayList<Duck> allDucks = new ArrayList<Duck>();
         int i = 0;
         Duck newDuck = new Duck(0, 0 , maxEnergy, false);
@@ -39,7 +23,7 @@ public class firstDraft{
             i++;
         }
         int cost = 0;
-        myNode initNode = new myNode(allDucks, null, cost); // node <--Node(problem.initial)
+        myNode initNode = new myNode(allDucks,null, cost); // node <--Node(problem.initial)
         if (initNode.isGoalNode(flagDuck, numPos)){
             return initNode;
             
@@ -48,21 +32,26 @@ public class firstDraft{
         reached.add(initNode);
         //reached<-- problem.initial
         frontier.add(initNode);
+        System.out.println(frontier.toString());
         while(!frontier.isEmpty()){
             myNode newNode = frontier.peek();
+            for (myNode x: newNode.expand(newNode.getDucks(), numPos)){
+                if (x.isGoalNode(flagDuck, numPos)){
+                    return x;
+                }
+                else{
+                    reached.add(x);
+                    frontier.add(x);
+                }
+            }
 
             
         }
         return initNode;
 
     }
-
-
     public static void main(String[]args){
-        System.out.println("Enter your input: ");
-        Scanner in = new Scanner(System.in);
-        String[] input = in.nextLine().split(" ");
-        in.close();
+        System.out.println(search(4,5,1,4));
 
 
     }
