@@ -3,6 +3,8 @@ import java.util.Queue;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Scanner;
 
 public class firstDraft{
@@ -16,17 +18,17 @@ public class firstDraft{
             
     }
 
-    public static boolean doesContain(ArrayList<myNode> L1, myNode n2){
+    /* public static boolean doesContain(HashMap<ArrayList<Duck>, myNode> L1, ArrayList<Duck> k){
         for (int i = 0; i<L1.size(); i++){
             if(checkDucks(L1.get(i).getDucks(), n2.getDucks()) && L1.get(i).getParent().equals(n2.getParent()) && L1.get(i).getPastCost() == n2.getPastCost()){
                 return false;
             }
         }
         return true;
-    }
+    } */
 
     public static myNode search(int numDucks, int numPos, int flagDuck, int maxEnergy){
-        ArrayList<myNode> reached = new ArrayList<myNode>();
+        HashMap<ArrayList<Duck>, myNode> reached = new HashMap<ArrayList<Duck>,myNode>();
         ArrayList<Duck> allDucks = new ArrayList<Duck>();
         int i = 0;
         Duck newDuck = new Duck(0, maxEnergy, maxEnergy, false);
@@ -42,9 +44,9 @@ public class firstDraft{
             
         }
         //System.out.println(initNode.toString());
-        Queue<myNode> frontier = new LinkedList<myNode>(); //frontier (FIFO queue) with node as element
+        Queue<myNode> frontier = new PriorityQueue<myNode>(); //frontier (FIFO queue) with node as element
         myNode clone = initNode.cloneNode(initNode);
-        reached.add(clone);
+        reached.put(clone.getDucks(), clone);
         //reached<-- problem.initial
         frontier.add(clone);
         //System.out.println(frontier.toString()+ " is frontier at line 50");
@@ -60,9 +62,10 @@ public class firstDraft{
                 if (x.isGoalNode(flagDuck, x.getDucks())){
                     return x;
                 }
-                if(doesContain(reached, x)){
-                    reached.add(x);
+                if(!reached.containsKey(x.getDucks()) || x.getPastCost()<reached.get(x.getDucks()).getPastCost()){
+                    reached.put(x.getDucks(), x);
                     frontier.add(x);
+                    System.out.println("true");
                 }
             }
 
@@ -73,7 +76,7 @@ public class firstDraft{
 
     }
     public static void main(String[]args){
-        myNode x = search(5, 4, 3, 2);
+        myNode x = search(3, 2, 1, 4);
         if(x == null){
             System.out.println("No solution found");
         }

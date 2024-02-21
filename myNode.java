@@ -135,8 +135,8 @@ public class myNode implements Comparable<myNode> {
      *  -transfer 1 energy to duckAt(i+1)
      *  -transfer 1 energy to duckAt(i-1)
      */
-    public Queue<myNode> expand(myNode n0, ArrayList<Duck> nodeDucks, int numberPos, int flagNum){
-        Queue<myNode> newNodes = new LinkedList<myNode>();
+    public PriorityQueue<myNode> expand(myNode n0, ArrayList<Duck> nodeDucks, int numberPos, int flagNum){
+        PriorityQueue<myNode> newNodes = new PriorityQueue<myNode>();
         for(int i = 0; i<nodeDucks.size(); i++){
 
             ArrayList<Duck> leftNodeDucks = cloneDucks(nodeDucks);
@@ -147,7 +147,7 @@ public class myNode implements Comparable<myNode> {
                     leftNodeDucks.get(i).pickUpFlag(numberPos);
                 }
                 if(totalEnergy(leftNodeDucks) >= energyNeeded(leftNodeDucks,flagNum, numberPos)){
-                    newNodes.add(new myNode(leftNodeDucks, n0, 0));
+                    newNodes.add(new myNode(leftNodeDucks, n0, n0.getPastCost()+1));
                 }
             }
             ArrayList<Duck> rightNodeDucks = cloneDucks(nodeDucks);
@@ -156,7 +156,7 @@ public class myNode implements Comparable<myNode> {
                 rightNodeDucks.get(i).setPos(rightNodeDucks.get(i).getPos() -1);
                 rightNodeDucks.get(i).setEnergy(rightNodeDucks.get(i).getEnergy() -1);
                 if(totalEnergy(rightNodeDucks) >= energyNeeded(rightNodeDucks, flagNum, numberPos)){
-                    newNodes.add(new myNode(rightNodeDucks, n0, 0));
+                    newNodes.add(new myNode(rightNodeDucks, n0, n0.getPastCost()+1));
                 }
             }
 
@@ -165,7 +165,7 @@ public class myNode implements Comparable<myNode> {
                 transferUp.get(i).setEnergy(transferUp.get(i).getEnergy() -1);
                 transferUp.get(i-1).setEnergy(transferUp.get(i-1).getEnergy() +1);
                 if(totalEnergy(transferUp) >= energyNeeded(transferUp, flagNum, numberPos)){
-                    newNodes.add(new myNode(transferUp, n0, 0));
+                    newNodes.add(new myNode(transferUp, n0, n0.getPastCost()+1));
                 }
             }
 
@@ -174,7 +174,7 @@ public class myNode implements Comparable<myNode> {
                 transferDown.get(i).setEnergy(transferDown.get(i).getEnergy() -1);
                 transferDown.get(i+1).setEnergy(transferDown.get(i+1).getEnergy() +1);
                 if(totalEnergy(transferDown) >= energyNeeded(transferDown, flagNum, numberPos)){
-                    newNodes.add(new myNode(transferDown, n0, 0));
+                    newNodes.add(new myNode(transferDown, n0, n0.getPastCost()+1));
                 }
             }
         }
