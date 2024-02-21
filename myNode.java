@@ -47,8 +47,16 @@ public class myNode implements Comparable<myNode> {
         this.pastCost = pastCost;
     }
 
-    public boolean isGoalNode(int flagCap, int totalPositions){
-        if(this.ducks.get(flagCap).getPos() == totalPositions - 1){
+    public boolean checkDuck0Pos(ArrayList<Duck> d){
+        for (int i=0; i< d.size(); i++){
+            if(d.get(i).getPos() != 0){
+                return false;
+            }}
+            return true;
+    }
+
+    public boolean isGoalNode(int flag, ArrayList<Duck> d){
+        if(checkDuck0Pos(d) && this.ducks.get(flag).getFlagCap()){
             return true;
         }
         else{
@@ -66,9 +74,18 @@ public class myNode implements Comparable<myNode> {
             "}";
     }
 
-    public Boolean equals(myNode n1){
-        n1 = new myNode(ducks, parent, pastCost);
-        return getDucks().equals(n1.getDucks()) && getParent() == n1.getParent() && getPastCost() == n1.getPastCost();
+    @Override
+    public boolean equals(Object n1){
+        myNode random = (myNode)n1;
+        return checkDucks(this.getDucks(), random.getDucks()) && this.getParent() == random.getParent() && this.getPastCost() == random.getPastCost();
+    }
+    public boolean checkDucks(ArrayList<Duck> d1, ArrayList<Duck> d2){
+        for (int i=0; i< d1.size(); i++){
+            if(!d1.get(i).equals(d2.get(i))){
+                return false;
+            }}
+            return true;
+            
     }
 
     public int totalEnergy(ArrayList<Duck> duckyMcDuckFace){
@@ -103,7 +120,7 @@ public class myNode implements Comparable<myNode> {
      *  -transfer 1 energy to duckAt(i+1)
      *  -transfer 1 energy to duckAt(i-1)
      */
-    public Queue<myNode> expand(myNode n0, ArrayList<Duck> nodeDucks, int numberPos){
+    public Queue<myNode> expand(myNode n0, ArrayList<Duck> nodeDucks, int numberPos, int flagNum){
         Queue<myNode> newNodes = new LinkedList<myNode>();
         for(int i = 0; i<nodeDucks.size(); i++){
 
@@ -111,7 +128,10 @@ public class myNode implements Comparable<myNode> {
             if(leftNodeDucks.get(i).getEnergy()> 0 && leftNodeDucks.get(i).getPos() < numberPos){
                 leftNodeDucks.get(i).setPos(leftNodeDucks.get(i).getPos() +1);
                 leftNodeDucks.get(i).setEnergy(leftNodeDucks.get(i).getEnergy() -1);
-                if(totalEnergy(leftNodeDucks) >= numberPos){
+                if(i == flagNum){
+                    leftNodeDucks.get(i).pickUpFlag(numberPos);
+                }
+                if(totalEnergy(leftNodeDucks) >= numberPos-1){
                     newNodes.add(new myNode(leftNodeDucks, n0, 0));
                 }
             }
@@ -120,7 +140,7 @@ public class myNode implements Comparable<myNode> {
                 //ArrayList<Duck> rightNodeDucks = new ArrayList<Duck>(nodeDucks);
                 rightNodeDucks.get(i).setPos(rightNodeDucks.get(i).getPos() -1);
                 rightNodeDucks.get(i).setEnergy(rightNodeDucks.get(i).getEnergy() -1);
-                if(totalEnergy(rightNodeDucks) >= numberPos){
+                if(totalEnergy(rightNodeDucks) >= numberPos-1){
                     newNodes.add(new myNode(rightNodeDucks, n0, 0));
                 }
             }
@@ -129,7 +149,7 @@ public class myNode implements Comparable<myNode> {
             if(i> 0 && transferUp.get(i).getPos() == transferUp.get(i-1).getPos() && transferUp.get(i).getEnergy()>0 && transferUp.get(i-1).getEnergy() < transferUp.get(i-1).getMaxEnergy()){
                 transferUp.get(i).setEnergy(transferUp.get(i).getEnergy() -1);
                 transferUp.get(i-1).setEnergy(transferUp.get(i-1).getEnergy() +1);
-                if(totalEnergy(transferUp) >= numberPos){
+                if(totalEnergy(transferUp) >= numberPos-1){
                     newNodes.add(new myNode(transferUp, n0, 0));
                 }
             }
@@ -138,7 +158,7 @@ public class myNode implements Comparable<myNode> {
             if( i < transferDown.size() -1 && transferDown.get(i).getPos() == transferDown.get(i+1).getPos() && transferDown.get(i).getEnergy()>0 && transferDown.get(i+1).getEnergy() < transferDown.get(i+1).getMaxEnergy()){
                 transferDown.get(i).setEnergy(transferDown.get(i).getEnergy() -1);
                 transferDown.get(i+1).setEnergy(transferDown.get(i+1).getEnergy() +1);
-                if(totalEnergy(transferDown) >= numberPos){
+                if(totalEnergy(transferDown) >= numberPos-1){
                     newNodes.add(new myNode(transferDown, n0, 0));
                 }
             }

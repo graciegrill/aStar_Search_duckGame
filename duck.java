@@ -85,14 +85,21 @@ public class Duck {
             "}";
     }
 
-    public boolean equals(Duck d1){
-        d1 = new Duck();
-        return getEnergy() == d1.getEnergy() && getPos() == d1.getPos() && getFlagCap() == d1.getFlagCap();
+    @Override
+    public boolean equals(Object d1){
+        Duck random = (Duck)d1;
+        return this.getEnergy() == random.getEnergy() && this.getPos() == random.getPos() && this.getFlagCap() == random.getFlagCap();
     }
 
     
     public Duck cloneDuck(){
         return new Duck(this.pos, this.energy, this.maxEnergy, this.flagCap);
+    }
+
+    public void pickUpFlag(int max){
+        if(this.pos == max - 1){
+            this.setFlagCap(true);
+        }
     }
     
 
