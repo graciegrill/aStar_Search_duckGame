@@ -18,14 +18,16 @@ public class firstDraft{
             
     }
 
-    /* public static boolean doesContain(HashMap<ArrayList<Duck>, myNode> L1, ArrayList<Duck> k){
-        for (int i = 0; i<L1.size(); i++){
-            if(checkDucks(L1.get(i).getDucks(), n2.getDucks()) && L1.get(i).getParent().equals(n2.getParent()) && L1.get(i).getPastCost() == n2.getPastCost()){
-                return false;
+    public static boolean doesContain(HashMap<ArrayList<Duck>, myNode> k, ArrayList<Duck> n ){
+        for (int i = 0; i<k.size(); i++){
+            for(ArrayList<Duck> x: k.keySet()){
+                if(!checkDucks(x, n)){
+                    return false;
+                }
             }
         }
         return true;
-    } */
+    }
 
     public static myNode search(int numDucks, int numPos, int flagDuck, int maxEnergy){
         HashMap<ArrayList<Duck>, myNode> reached = new HashMap<ArrayList<Duck>,myNode>();
@@ -62,7 +64,7 @@ public class firstDraft{
                 if (x.isGoalNode(flagDuck, x.getDucks())){
                     return x;
                 }
-                if(!reached.containsKey(x.getDucks()) || x.getPastCost()<reached.get(x.getDucks()).getPastCost()){
+                if(doesContain(reached, x.getDucks())  == false|| x.getPastCost()<reached.get(x.getDucks()).getPastCost()){
                     reached.put(x.getDucks(), x);
                     frontier.add(x);
                     System.out.println("true");
@@ -76,7 +78,7 @@ public class firstDraft{
 
     }
     public static void main(String[]args){
-        myNode x = search(3, 2, 1, 4);
+        myNode x = search(4, 5, 1, 4);
         if(x == null){
             System.out.println("No solution found");
         }
