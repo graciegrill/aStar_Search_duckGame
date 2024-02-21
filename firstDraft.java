@@ -21,12 +21,12 @@ public class firstDraft{
     public static boolean doesContain(HashMap<ArrayList<Duck>, myNode> k, ArrayList<Duck> n ){
         for (int i = 0; i<k.size(); i++){
             for(ArrayList<Duck> x: k.keySet()){
-                if(!checkDucks(x, n)){
-                    return false;
+                if(checkDucks(x, n)){
+                    return true;
                 }
             }
         }
-        return true;
+        return false;
     }
 
     public static myNode search(int numDucks, int numPos, int flagDuck, int maxEnergy){
@@ -64,7 +64,7 @@ public class firstDraft{
                 if (x.isGoalNode(flagDuck, x.getDucks())){
                     return x;
                 }
-                if(doesContain(reached, x.getDucks())  == false|| x.getPastCost()<reached.get(x.getDucks()).getPastCost()){
+                if(doesContain(reached, x.getDucks())  == false|| (reached.containsKey(x.getDucks()) && x.getPastCost()<reached.get(x.getDucks()).getPastCost())){
                     reached.put(x.getDucks(), x);
                     frontier.add(x);
                     System.out.println("true");
@@ -78,7 +78,7 @@ public class firstDraft{
 
     }
     public static void main(String[]args){
-        myNode x = search(4, 5, 1, 4);
+        myNode x = search(2, 3, 0, 3);
         if(x == null){
             System.out.println("No solution found");
         }
