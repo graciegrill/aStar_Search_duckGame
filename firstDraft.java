@@ -53,7 +53,7 @@ public class firstDraft{
             myNode newNode = frontier.poll();
             //System.out.println(frontier+" is frontier at line 54");
            // myNode newNode1 = newNode.cloneNode(newNode);
-            System.out.println(newNode.toString());
+            //System.out.println(newNode.toString());
             //j++;
 
             for (myNode x: newNode.expand(newNode, newNode.getDucks(), numPos, flagDuck)){
@@ -73,7 +73,7 @@ public class firstDraft{
 
     }
     public static void main(String[]args){
-        myNode x = search(2, 2, 0, 4);
+        myNode x = search(5, 4, 3, 2);
         if(x == null){
             System.out.println("No solution found");
         }
