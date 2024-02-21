@@ -89,6 +89,11 @@ public class Duck {
         d1 = new Duck();
         return getEnergy() == d1.getEnergy() && getPos() == d1.getPos() && getFlagCap() == d1.getFlagCap();
     }
+
+    
+    public Duck cloneDuck(){
+        return new Duck(this.pos, this.energy, this.maxEnergy, this.flagCap);
+    }
     
 
     

@@ -1,7 +1,9 @@
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.PriorityQueue;
+import java.util.Queue;
 
-public class myNode {
+public class myNode implements Comparable<myNode> {
     
     private ArrayList<Duck> ducks;
     private myNode parent;
@@ -46,7 +48,7 @@ public class myNode {
     }
 
     public boolean isGoalNode(int flagCap, int totalPositions){
-        if(this.ducks.get(flagCap).getPos() == totalPositions){
+        if(this.ducks.get(flagCap).getPos() == totalPositions - 1){
             return true;
         }
         else{
@@ -77,6 +79,22 @@ public class myNode {
         return e;
     }
 
+    public ArrayList<Duck> cloneDucks(ArrayList<Duck> d3){
+        ArrayList<Duck> clonedDucks = new ArrayList<Duck>();
+        for (Duck d: d3){
+            clonedDucks.add(d.cloneDuck());
+        }
+        return clonedDucks;
+    }
+
+    public myNode cloneNode(myNode n0){
+        myNode n1 = new myNode();
+        n1.setDucks(cloneDucks(n0.getDucks()));
+        n1.setParent(n0.getParent());
+        n1.setPastCost(n0.getPastCost());
+        return n1;
+    }
+
      /*
      * Need to fill in 
      * A duck can:
@@ -85,48 +103,56 @@ public class myNode {
      *  -transfer 1 energy to duckAt(i+1)
      *  -transfer 1 energy to duckAt(i-1)
      */
-    public PriorityQueue<myNode> expand(ArrayList<Duck> nodeDucks, int numberPos){
-        PriorityQueue<myNode> newNodes = new PriorityQueue<myNode>();
+    public Queue<myNode> expand(myNode n0, ArrayList<Duck> nodeDucks, int numberPos){
+        Queue<myNode> newNodes = new LinkedList<myNode>();
         for(int i = 0; i<nodeDucks.size(); i++){
 
-            ArrayList<Duck> leftNodeDucks = new ArrayList<Duck>(nodeDucks);
+            ArrayList<Duck> leftNodeDucks = cloneDucks(nodeDucks);
             if(leftNodeDucks.get(i).getEnergy()> 0 && leftNodeDucks.get(i).getPos() < numberPos){
                 leftNodeDucks.get(i).setPos(leftNodeDucks.get(i).getPos() +1);
                 leftNodeDucks.get(i).setEnergy(leftNodeDucks.get(i).getEnergy() -1);
                 if(totalEnergy(leftNodeDucks) >= numberPos){
-                    newNodes.add(new myNode(leftNodeDucks, this, 0));
+                    newNodes.add(new myNode(leftNodeDucks, n0, 0));
                 }
             }
+            ArrayList<Duck> rightNodeDucks = cloneDucks(nodeDucks);
             if(leftNodeDucks.get(i).getEnergy()> 0 && leftNodeDucks.get(i).getPos() > 0 ){
-                ArrayList<Duck> rightNodeDucks = new ArrayList<Duck>(nodeDucks);
+                //ArrayList<Duck> rightNodeDucks = new ArrayList<Duck>(nodeDucks);
                 rightNodeDucks.get(i).setPos(rightNodeDucks.get(i).getPos() -1);
                 rightNodeDucks.get(i).setEnergy(rightNodeDucks.get(i).getEnergy() -1);
                 if(totalEnergy(rightNodeDucks) >= numberPos){
-                    newNodes.add(new myNode(rightNodeDucks, this, 0));
+                    newNodes.add(new myNode(rightNodeDucks, n0, 0));
                 }
             }
 
-            ArrayList<Duck> transferUp = new ArrayList<Duck>(nodeDucks);
-            if(i> 0 && transferUp.get(i).getPos() == transferUp.get(i-1).getPos() && transferUp.get(i).getPos()>0 && transferUp.get(i-1).getEnergy() < transferUp.get(i-1).getMaxEnergy()){
+            ArrayList<Duck> transferUp = cloneDucks(nodeDucks);
+            if(i> 0 && transferUp.get(i).getPos() == transferUp.get(i-1).getPos() && transferUp.get(i).getEnergy()>0 && transferUp.get(i-1).getEnergy() < transferUp.get(i-1).getMaxEnergy()){
                 transferUp.get(i).setEnergy(transferUp.get(i).getEnergy() -1);
                 transferUp.get(i-1).setEnergy(transferUp.get(i-1).getEnergy() +1);
                 if(totalEnergy(transferUp) >= numberPos){
-                    newNodes.add(new myNode(transferUp, this, 0));
+                    newNodes.add(new myNode(transferUp, n0, 0));
                 }
             }
 
-            ArrayList<Duck> transferDown = new ArrayList<Duck>(nodeDucks);
-            if( i < transferDown.size() -1 && transferDown.get(i).getPos() == transferDown.get(i+1).getPos() && transferDown.get(i).getPos()>0 && transferDown.get(i-1).getEnergy() < transferDown.get(i-1).getMaxEnergy()){
+            ArrayList<Duck> transferDown = cloneDucks(nodeDucks);
+            if( i < transferDown.size() -1 && transferDown.get(i).getPos() == transferDown.get(i+1).getPos() && transferDown.get(i).getEnergy()>0 && transferDown.get(i+1).getEnergy() < transferDown.get(i+1).getMaxEnergy()){
                 transferDown.get(i).setEnergy(transferDown.get(i).getEnergy() -1);
                 transferDown.get(i+1).setEnergy(transferDown.get(i+1).getEnergy() +1);
                 if(totalEnergy(transferDown) >= numberPos){
-                    newNodes.add(new myNode(transferDown, this, 0));
+                    newNodes.add(new myNode(transferDown, n0, 0));
                 }
             }
         }
 
-
+        if (newNodes.size() > 0){
+            //System.out.println(newNodes.size());
+            //System.out.println(newNodes.toString());
+        }
         return newNodes;
+    }
+
+    public int compareTo(myNode n1){
+        return Integer.compare(this.pastCost, n1.pastCost);
     }
 
 
