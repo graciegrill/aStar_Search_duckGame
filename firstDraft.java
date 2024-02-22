@@ -49,7 +49,7 @@ public class firstDraft{
         Queue<myNode> frontier = new PriorityQueue<>(new Comparator<myNode>() {
     @Override
     public int compare(myNode o1, myNode o2) {
-        return Integer.compare(o1.getPastCost(), o2.getPastCost());
+        return Integer.compare(o1.heuristic(o1,flagDuck, numPos), o2.heuristic(o2, flagDuck, numPos));
     }
 }); //frontier (FIFO queue) with node as element
         myNode clone = initNode.cloneNode(initNode);
@@ -83,7 +83,7 @@ public class firstDraft{
 
     }
     public static void main(String[]args){
-        myNode x = search(7, 4, 3, 5);
+        myNode x = search(4, 5,  1, 4);
         if(x == null){
             System.out.println("No solution found");
         }

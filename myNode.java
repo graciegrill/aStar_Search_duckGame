@@ -136,6 +136,13 @@ public class myNode implements Comparable<myNode> {
      *  -transfer 1 energy to duckAt(i+1)
      *  -transfer 1 energy to duckAt(i-1)
      */
+
+    public int heuristic(myNode n0, int i, int j){
+        int h = 0;
+        h+=energyNeeded(n0.getDucks(),i , j);
+        h+=n0.getPastCost();
+        return h;
+    }
     public Queue<myNode> expand(myNode n0, ArrayList<Duck> nodeDucks, int numberPos, int flagNum){
         Queue<myNode> newNodes = new PriorityQueue<>(new Comparator<myNode>() {
     @Override
