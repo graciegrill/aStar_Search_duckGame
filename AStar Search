@@ -38,11 +38,13 @@ public class finalDraft {
 
             for (myNode x : newNode.expand(newNode, newNode.getDucks(), numPos)) {
                 if (x.isGoalNode(flagDuck, numPos)) {
+                    System.out.println("Goal found");
                     return x;
                 }
                 if (!reached.contains(x)) {
                     reached.add(x);
                     frontier.add(x);
+                    System.out.println("Ducks' positions: " + x.toString()); // Print ducks' positions
                 }
             }
 
