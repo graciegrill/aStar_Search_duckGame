@@ -3,6 +3,7 @@ import java.util.Queue;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Scanner;
@@ -33,9 +34,8 @@ public class firstDraft{
         HashMap<ArrayList<Duck>, myNode> reached = new HashMap<ArrayList<Duck>,myNode>();
         ArrayList<Duck> allDucks = new ArrayList<Duck>();
         int i = 0;
-        Duck newDuck = new Duck(0, maxEnergy, maxEnergy, false);
         while (i <numDucks){
-            allDucks.add(newDuck);
+            allDucks.add(new Duck(0, maxEnergy, maxEnergy, false));
             i++;
         }
         int cost = 0;
@@ -46,7 +46,12 @@ public class firstDraft{
             
         }
         //System.out.println(initNode.toString());
-        Queue<myNode> frontier = new PriorityQueue<myNode>(); //frontier (FIFO queue) with node as element
+        Queue<myNode> frontier = new PriorityQueue<>(new Comparator<myNode>() {
+    @Override
+    public int compare(myNode o1, myNode o2) {
+        return Integer.compare(o1.getPastCost(), o2.getPastCost());
+    }
+}); //frontier (FIFO queue) with node as element
         myNode clone = initNode.cloneNode(initNode);
         reached.put(clone.getDucks(), clone);
         //reached<-- problem.initial
@@ -64,7 +69,7 @@ public class firstDraft{
                 if (x.isGoalNode(flagDuck, x.getDucks())){
                     return x;
                 }
-                if(doesContain(reached, x.getDucks())  == false|| (reached.containsKey(x.getDucks()) && x.getPastCost()<reached.get(x.getDucks()).getPastCost())){
+                if(doesContain(reached, x.getDucks())  == false){
                     reached.put(x.getDucks(), x);
                     frontier.add(x);
                     System.out.println("true");
@@ -78,7 +83,7 @@ public class firstDraft{
 
     }
     public static void main(String[]args){
-        myNode x = search(2, 3, 0, 3);
+        myNode x = search(7, 4, 3, 5);
         if(x == null){
             System.out.println("No solution found");
         }

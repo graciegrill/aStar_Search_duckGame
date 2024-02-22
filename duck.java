@@ -1,3 +1,5 @@
+import java.util.Objects;
+
 public class Duck {
 
     private int pos;
@@ -90,7 +92,7 @@ public class Duck {
         Duck random = (Duck)d1;
         return this.getEnergy() == random.getEnergy() && this.getPos() == random.getPos() && this.getFlagCap() == random.getFlagCap();
     }
-
+    
     
     public Duck cloneDuck(){
         return new Duck(this.pos, this.energy, this.maxEnergy, this.flagCap);

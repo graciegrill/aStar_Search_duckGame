@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
 import java.util.Queue;
@@ -135,8 +136,13 @@ public class myNode implements Comparable<myNode> {
      *  -transfer 1 energy to duckAt(i+1)
      *  -transfer 1 energy to duckAt(i-1)
      */
-    public PriorityQueue<myNode> expand(myNode n0, ArrayList<Duck> nodeDucks, int numberPos, int flagNum){
-        PriorityQueue<myNode> newNodes = new PriorityQueue<myNode>();
+    public Queue<myNode> expand(myNode n0, ArrayList<Duck> nodeDucks, int numberPos, int flagNum){
+        Queue<myNode> newNodes = new PriorityQueue<>(new Comparator<myNode>() {
+    @Override
+    public int compare(myNode o1, myNode o2) {
+        return Integer.compare(o1.getPastCost(), o2.getPastCost());
+    }
+});
         for(int i = 0; i<nodeDucks.size(); i++){
 
             ArrayList<Duck> leftNodeDucks = cloneDucks(nodeDucks);
@@ -151,7 +157,7 @@ public class myNode implements Comparable<myNode> {
                 }
             }
             ArrayList<Duck> rightNodeDucks = cloneDucks(nodeDucks);
-            if(leftNodeDucks.get(i).getEnergy()> 0 && leftNodeDucks.get(i).getPos() > 0 ){
+            if(rightNodeDucks.get(i).getEnergy()> 0 && rightNodeDucks.get(i).getPos() > 0 ){
                 //ArrayList<Duck> rightNodeDucks = new ArrayList<Duck>(nodeDucks);
                 rightNodeDucks.get(i).setPos(rightNodeDucks.get(i).getPos() -1);
                 rightNodeDucks.get(i).setEnergy(rightNodeDucks.get(i).getEnergy() -1);
