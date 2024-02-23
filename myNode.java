@@ -12,14 +12,21 @@ public class myNode {
 
     
 
-
+    /**
+     * Constructor
+     * @param ducks: Duck ArrayList
+     * @param parent: parent node
+     * @param pastCost: past cost of moves
+     */
     public myNode(ArrayList<Duck> ducks, myNode parent, int pastCost) {
         this.ducks = ducks;
         this.parent = parent ;
         this.pastCost = pastCost;
         
     }
-
+    /**
+     * Another constructor
+     */
     public myNode(){
         this.ducks = new ArrayList<Duck>();
         this.parent = this;
@@ -93,6 +100,13 @@ public class myNode {
         myNode random = (myNode)n1;
         return checkDucks(this.getDucks(), random.getDucks()) && this.getParent() == random.getParent() && this.getPastCost() == random.getPastCost();
     }
+
+    /**
+     * Checks to see if ducks are equal
+     * @param d1: ArrayList<Duck> 1
+     * @param d2: ArrayList<duck>2
+     * @return true if they are the same, false if not
+     */
     public boolean checkDucks(ArrayList<Duck> d1, ArrayList<Duck> d2){
         for (int i=0; i< d1.size(); i++){
             if(!d1.get(i).equals(d2.get(i))){
