@@ -151,7 +151,7 @@ public class myNode {
         int i = 0;
         for(Duck x: d){
             if(i == flagDuckDistance && x.getFlagCap() == false){
-                sum+=(Math.abs(maxDistance - x.getPos())*2)+x.getPos();
+                sum+=(Math.abs((maxDistance - 1) - x.getPos())*2)+x.getPos();
             }
             else{
                 sum+=x.getPos();
