@@ -1,15 +1,18 @@
-import java.util.LinkedList;
 import java.util.Queue;
-import java.util.List;
 import java.util.PriorityQueue;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Scanner;
 
 public class firstDraft{
 
+    /**
+     * Checks if ducks are the same
+     * @param d1: An array list of ducks
+     * @param d2: Another array list of ducks
+     * @return true if the ducks are the same, returns false if they are not
+     */
     public static boolean checkDucks(ArrayList<Duck> d1, ArrayList<Duck> d2){
         for (int i=0; i< d1.size(); i++){
             if(!d1.get(i).equals(d2.get(i))){
@@ -18,7 +21,12 @@ public class firstDraft{
             return true;
             
     }
-
+    /**
+     * Checks if a state is in.
+     * @param k: Hashmap of arrayList ducks and myNodes
+     * @param n: ArrayList of ducks 
+     * @return true if the state is in the hashmap and false it's not
+     */
     public static boolean doesContain(HashMap<ArrayList<Duck>, myNode> k, ArrayList<Duck> n ){
         for (int i = 0; i<k.size(); i++){
             for(ArrayList<Duck> x: k.keySet()){
@@ -30,6 +38,14 @@ public class firstDraft{
         return false;
     }
 
+    /**
+     * This is the A* search.
+     * @param numDucks: Number of ducks
+     * @param numPos: Number of positions
+     * @param flagDuck: Which duck is the flag duck
+     * @param maxEnergy: The maximum energy
+     * @return myNode for the solution or null for failure
+     */
     public static myNode search(int numDucks, int numPos, int flagDuck, int maxEnergy){
         HashMap<ArrayList<Duck>, myNode> reached = new HashMap<ArrayList<Duck>,myNode>();
         ArrayList<Duck> allDucks = new ArrayList<Duck>();
@@ -45,26 +61,17 @@ public class firstDraft{
             return initNode;
             
         }
-        //System.out.println(initNode.toString());
         Queue<myNode> frontier = new PriorityQueue<>(new Comparator<myNode>() {
     @Override
     public int compare(myNode o1, myNode o2) {
-        return Integer.compare(o1.heuristic(o1,flagDuck, numPos), o2.heuristic(o2, flagDuck, numPos));
+        return Integer.compare(o1.getPastCost(), o2.getPastCost());
     }
-}); //frontier (FIFO queue) with node as element
+}); 
         myNode clone = initNode.cloneNode(initNode);
         reached.put(clone.getDucks(), clone);
-        //reached<-- problem.initial
         frontier.add(clone);
-        //System.out.println(frontier.toString()+ " is frontier at line 50");
-        //int j = 0;
         while(!frontier.isEmpty()){
             myNode newNode = frontier.poll();
-            //System.out.println(frontier+" is frontier at line 54");
-           // myNode newNode1 = newNode.cloneNode(newNode);
-            //System.out.println(newNode.toString());
-            //j++;
-
             for (myNode x: newNode.expand(newNode, newNode.getDucks(), numPos, flagDuck)){
                 if (x.isGoalNode(flagDuck, x.getDucks())){
                     return x;
@@ -72,18 +79,29 @@ public class firstDraft{
                 if(doesContain(reached, x.getDucks())  == false){
                     reached.put(x.getDucks(), x);
                     frontier.add(x);
-                    System.out.println("true");
                 }
             }
 
             
         }
-        //System.out.println(j);
         return null;
 
     }
+
+    /* public static String trackMoves(){
+
+    } */
     public static void main(String[]args){
-        myNode x = search(4, 5,  1, 4);
+        Scanner scanner =new Scanner (System.in);
+        System.out.print("Enter the number of ducks: ");
+        int numDucks = scanner.nextInt();
+        System.out.print("Enter the number of positions: ");
+        int numPos = scanner.nextInt();
+        System.out.print("Enter the flag duck: ");
+        int flagDuck = scanner.nextInt();
+        System.out.print("Enter the maximum energy: ");
+        int maxEnergy = scanner.nextInt();
+        myNode x = search(numDucks, numPos, flagDuck, maxEnergy);
         if(x == null){
             System.out.println("No solution found");
         }
@@ -91,6 +109,7 @@ public class firstDraft{
             System.out.println("SOLUTION FOUND");
             System.out.println(x.toString());
         }
+        scanner.close();
 
 
     }

@@ -1,4 +1,3 @@
-import java.util.Objects;
 
 public class Duck {
 
@@ -58,8 +57,11 @@ public class Duck {
     public void setFlagCap(Boolean flagCap) {
         this.flagCap = flagCap;
     }
-
-    public void moveDuck(int direction){ //one move at a time
+    /**
+     * Moves a duck left or right.
+     * @param direction indicates direction of movement
+     */
+    public void moveDuck(int direction){ 
         if(direction == 1 && this.energy>=1){
             this.pos = this.pos + 1;
             this.energy = this.energy - 1;
@@ -70,8 +72,11 @@ public class Duck {
 
         }
     }
-
-    public void transferEnergy(Duck d0){ // one unit at a time
+    /**
+     * Transfers energy between ducks
+     * @param d0 - the duck to transfer energy to
+     */
+    public void transferEnergy(Duck d0){ 
         if(this.energy>0 && d0.getEnergy() != d0.getMaxEnergy()){
             d0.setEnergy(d0.getEnergy()+1);
             this.energy = this.energy - 1;
@@ -93,11 +98,17 @@ public class Duck {
         return this.getEnergy() == random.getEnergy() && this.getPos() == random.getPos() && this.getFlagCap() == random.getFlagCap();
     }
     
-    
+    /**
+     * Clones this duck and returns a new duck.
+     * @return a new cloned duck.
+     */
     public Duck cloneDuck(){
         return new Duck(this.pos, this.energy, this.maxEnergy, this.flagCap);
     }
-
+    /**
+     * Registers the flag pick up
+     * @param max: the max position; indicative of picking up the flag
+     */
     public void pickUpFlag(int max){
         if(this.pos == max - 1){
             this.setFlagCap(true);
