@@ -8,7 +8,7 @@ import java.util.Scanner;
 public class firstDraft{
 
     /**
-     * Checks if ducks are the same
+     * Checks if ducks are the
      * @param d1: An array list of ducks
      * @param d2: Another array list of ducks
      * @return true if the ducks are the same, returns false if they are not
@@ -61,10 +61,10 @@ public class firstDraft{
             return initNode;
             
         }
-        Queue<myNode> frontier = new PriorityQueue<>(new Comparator<myNode>() {
+        Queue<myNode> frontier = new PriorityQueue<myNode>(new Comparator<myNode>() {
     @Override
     public int compare(myNode o1, myNode o2) {
-        return Integer.compare(o1.getPastCost(), o2.getPastCost());
+        return Integer.compare(o1.heuristic(o1, o1.getDucks().get(flagDuck).getPos(), numPos), o2.heuristic(o2, o2.getDucks().get(flagDuck).getPos(), numPos));
     }
 }); 
         myNode clone = initNode.cloneNode(initNode);
