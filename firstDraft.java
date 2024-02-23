@@ -88,9 +88,39 @@ public class firstDraft{
 
     }
 
-    /* public static String trackMoves(){
+    public static String generateMovementSequence(myNode x) {
+        StringBuilder sequence = new StringBuilder();
+        myNode currentNode = x;
+        while (currentNode != null && currentNode.getParent() != null) {
+            myNode parentNode = currentNode.getParent();
+            for (int i = 0; i < currentNode.getDucks().size(); i++) {
+                Duck currentDuck = currentNode.getDucks().get(i);
+                Duck parentDuck = parentNode.getDucks().get(i);
+                if (currentDuck.getPos()!=(parentDuck.getPos())) {
+                    if (currentDuck.getPos() < parentDuck.getPos()) {
+                        sequence.insert(0, "R" + i + " ");
+                    } else {
+                        sequence.insert(0, "L" + i + " ");
+                    }
+                } else if (currentDuck.getEnergy() > parentDuck.getEnergy() && currentDuck.getPos() == (parentDuck.getPos())) {
+                    // Transfer energy
+                    currentDuck.setEnergy(currentDuck.getEnergy() + parentDuck.getEnergy());
+                    parentDuck.setEnergy(0);
+                    for (int j = 0; j < currentNode.getDucks().size(); j++) {
+                        Duck currentDuck1 = currentNode.getDucks().get(j);
+                        Duck parentDuck1 = parentNode.getDucks().get(j);
+                        if(currentDuck1.getEnergy() < parentDuck1.getEnergy()){
+                            sequence.insert(0, "T" + j + "->" + i + " ");
 
-    } */
+                        }
+                    }
+                }
+            }
+            currentNode = parentNode;
+        }
+        return sequence.toString().trim();
+    }
+    
     public static void main(String[]args){
         Scanner scanner =new Scanner (System.in);
         System.out.print("Enter the number of ducks: ");
@@ -107,7 +137,7 @@ public class firstDraft{
         }
         else{
             System.out.println("SOLUTION FOUND");
-            System.out.println(x.toString());
+            System.out.println(generateMovementSequence(x));
         }
         scanner.close();
 
