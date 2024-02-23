@@ -142,3 +142,31 @@ public class firstDraft{
 
     }
 }
+/**
+ * Enter the number of ducks: 4
+Enter the number of positions: 5
+Enter the flag duck: 1
+Enter the maximum energy: 4
+SOLUTION FOUND
+L1 L0 T0->1 L1 L3 L2 T3->2 L2 T2->1 L1 L1 R1 R1 T2->1 R1 T0->1 R0 R2 T3->2 R3 R2 R1
+
+Enter the number of ducks: 2
+Enter the number of positions: 3
+Enter the flag duck: 0
+Enter the maximum energy: 3
+SOLUTION FOUND
+L0 L0 R0 L1 T1->0 R1 R0
+
+Enter the number of ducks: 7
+Enter the number of positions: 4
+Enter the flag duck: 3
+Enter the maximum energy: 5
+SOLUTION FOUND
+L3 L2 T2->3 R2 L3 L3 R3 R3 R3
+
+Enter the number of ducks: 5
+Enter the number of positions: 4
+Enter the flag duck: 3
+Enter the maximum energy: 2
+No solution found
+ */
