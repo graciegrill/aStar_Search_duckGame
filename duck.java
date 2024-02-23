@@ -43,6 +43,10 @@ public class Duck {
     }
 
     public void setEnergy(int energy) {
+        if(energy>this.maxEnergy){
+            System.out.println("ERROR");
+            System.exit(0);
+        }
         this.energy = energy;
     }
 
@@ -114,6 +118,7 @@ public class Duck {
             this.setFlagCap(true);
         }
     }
+    
     
 
     

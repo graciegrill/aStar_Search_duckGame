@@ -28,13 +28,13 @@ public class firstDraft{
      * @return true if the state is in the hashmap and false it's not
      */
     public static boolean doesContain(HashMap<ArrayList<Duck>, myNode> k, ArrayList<Duck> n ){
-        for (int i = 0; i<k.size(); i++){
+    //    for (int i = 0; i<k.size(); i++){
             for(ArrayList<Duck> x: k.keySet()){
                 if(checkDucks(x, n)){
                     return true;
                 }
             }
-        }
+      //  }
         return false;
     }
 
@@ -64,7 +64,7 @@ public class firstDraft{
         Queue<myNode> frontier = new PriorityQueue<myNode>(new Comparator<myNode>() {
     @Override
     public int compare(myNode o1, myNode o2) {
-        return Integer.compare(o1.heuristic(o1, o1.getDucks().get(flagDuck).getPos(), numPos), o2.heuristic(o2, o2.getDucks().get(flagDuck).getPos(), numPos));
+        return Integer.compare(o1.heuristic(o1, flagDuck, numPos), o2.heuristic(o2, flagDuck, numPos));
     }
 }); 
         myNode clone = initNode.cloneNode(initNode);
@@ -72,11 +72,12 @@ public class firstDraft{
         frontier.add(clone);
         while(!frontier.isEmpty()){
             myNode newNode = frontier.poll();
+           // System.out.println(newNode.getDucks().toString()+newNode.getPastCost() +"\t"+newNode.heuristic(newNode, newNode.getDucks().get(flagDuck).getPos(), numPos));
             for (myNode x: newNode.expand(newNode, newNode.getDucks(), numPos, flagDuck)){
                 if (x.isGoalNode(flagDuck, x.getDucks())){
                     return x;
                 }
-                if(doesContain(reached, x.getDucks())  == false){
+                if(doesContain(reached, x.getDucks()) == false){
                     reached.put(x.getDucks(), x);
                     frontier.add(x);
                 }
@@ -103,9 +104,6 @@ public class firstDraft{
                         sequence.insert(0, "L" + i + " ");
                     }
                 } else if (currentDuck.getEnergy() > parentDuck.getEnergy() && currentDuck.getPos() == (parentDuck.getPos())) {
-                    // Transfer energy
-                    currentDuck.setEnergy(currentDuck.getEnergy() + parentDuck.getEnergy());
-                    parentDuck.setEnergy(0);
                     for (int j = 0; j < currentNode.getDucks().size(); j++) {
                         Duck currentDuck1 = currentNode.getDucks().get(j);
                         Duck parentDuck1 = parentNode.getDucks().get(j);

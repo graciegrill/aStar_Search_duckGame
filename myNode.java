@@ -160,12 +160,12 @@ public class myNode {
      * @param maxDistance: the total number of positions
      * @return: sum as the energy needed.
      */
-    public int energyNeeded(ArrayList<Duck> d, int flagDuckDistance, int maxDistance){
+    public int energyNeeded(ArrayList<Duck> d, int flagDuckLane, int maxDistance){
         int sum = 0;
         int i = 0;
         for(Duck x: d){
-            if(i == flagDuckDistance && x.getFlagCap() == false){
-                sum+=(Math.abs((maxDistance - 1) - x.getPos())*2)+x.getPos();
+            if(i == flagDuckLane && x.getFlagCap() == false){
+                sum+=((maxDistance - 1 - x.getPos())*2)+x.getPos();
             }
             else{
                 sum+=x.getPos();
@@ -198,22 +198,22 @@ public class myNode {
      * @return: Queue of new nodes
      */
     public Queue<myNode> expand(myNode n0, ArrayList<Duck> nodeDucks, int numberPos, int flagNum){
-        Queue<myNode> newNodes = new PriorityQueue<>(new Comparator<myNode>() {
+        Queue<myNode> newNodes = new PriorityQueue<myNode>(new Comparator<myNode>() {
     @Override
     public int compare(myNode o1, myNode o2) {
-        return Integer.compare(o1.heuristic(o1, o1.getDucks().get(flagNum).getPos(), numberPos), o2.heuristic(o2, o2.getDucks().get(flagNum).getPos(), numberPos));
+        return Integer.compare(o1.heuristic(o1, flagNum, numberPos), o2.heuristic(o2, flagNum, numberPos));
     }
 });
         for(int i = 0; i<nodeDucks.size(); i++){
 
             ArrayList<Duck> leftNodeDucks = cloneDucks(nodeDucks);
-            if(leftNodeDucks.get(i).getEnergy()> 0 && leftNodeDucks.get(i).getPos() < numberPos){
+            if(leftNodeDucks.get(i).getEnergy()> 0 && leftNodeDucks.get(i).getPos() < numberPos-1){
                 leftNodeDucks.get(i).setPos(leftNodeDucks.get(i).getPos() +1);
                 leftNodeDucks.get(i).setEnergy(leftNodeDucks.get(i).getEnergy() -1);
                 if(i == flagNum){
                     leftNodeDucks.get(i).pickUpFlag(numberPos);
                 }
-                if(totalEnergy(leftNodeDucks) >= energyNeeded(leftNodeDucks,flagNum, numberPos-1)){
+                if(totalEnergy(leftNodeDucks) >= energyNeeded(leftNodeDucks,flagNum, numberPos)){
                     newNodes.add(new myNode(leftNodeDucks, n0, n0.getPastCost()+1));
                 }
             }
@@ -222,7 +222,7 @@ public class myNode {
                 //ArrayList<Duck> rightNodeDucks = new ArrayList<Duck>(nodeDucks);
                 rightNodeDucks.get(i).setPos(rightNodeDucks.get(i).getPos() -1);
                 rightNodeDucks.get(i).setEnergy(rightNodeDucks.get(i).getEnergy() -1);
-                if(totalEnergy(rightNodeDucks) >= energyNeeded(rightNodeDucks, flagNum, numberPos-1)){
+                if(totalEnergy(rightNodeDucks) >= energyNeeded(rightNodeDucks, flagNum, numberPos)){
                     newNodes.add(new myNode(rightNodeDucks, n0, n0.getPastCost()+1));
                 }
             }
@@ -231,7 +231,7 @@ public class myNode {
             if(i> 0 && transferUp.get(i).getPos() == transferUp.get(i-1).getPos() && transferUp.get(i).getEnergy()>0 && transferUp.get(i-1).getEnergy() < transferUp.get(i-1).getMaxEnergy()){
                 transferUp.get(i).setEnergy(transferUp.get(i).getEnergy() -1);
                 transferUp.get(i-1).setEnergy(transferUp.get(i-1).getEnergy() +1);
-                if(totalEnergy(transferUp) >= energyNeeded(transferUp, flagNum, numberPos-1)){
+                if(totalEnergy(transferUp) >= energyNeeded(transferUp, flagNum, numberPos)){
                     newNodes.add(new myNode(transferUp, n0, n0.getPastCost()+1));
                 }
             }
@@ -240,15 +240,10 @@ public class myNode {
             if( i < transferDown.size() -1 && transferDown.get(i).getPos() == transferDown.get(i+1).getPos() && transferDown.get(i).getEnergy()>0 && transferDown.get(i+1).getEnergy() < transferDown.get(i+1).getMaxEnergy()){
                 transferDown.get(i).setEnergy(transferDown.get(i).getEnergy() -1);
                 transferDown.get(i+1).setEnergy(transferDown.get(i+1).getEnergy() +1);
-                if(totalEnergy(transferDown) >= energyNeeded(transferDown, flagNum, numberPos-1)){
+                if(totalEnergy(transferDown) >= energyNeeded(transferDown, flagNum, numberPos)){
                     newNodes.add(new myNode(transferDown, n0, n0.getPastCost()+1));
                 }
             }
-        }
-
-        if (newNodes.size() > 0){
-            //System.out.println(newNodes.size());
-            //System.out.println(newNodes.toString());
         }
         return newNodes;
     }
