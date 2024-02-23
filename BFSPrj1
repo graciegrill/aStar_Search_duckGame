@@ -1,27 +1,27 @@
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.PriorityQueue;
 import java.util.Scanner;
 
 public class BestFirstSearch {
 
-    public static myNode search(int numDucks, int numPos, int flagDuck, int maxEnergy){
+    public static myNode search(int numDucks, int numPos, int flagDuck, int maxEnergy) {
         ArrayList<myNode> reached = new ArrayList<>();
         ArrayList<Duck> allDucks = new ArrayList<>();
         int i = 0;
         Duck newDuck = new Duck(0, maxEnergy, maxEnergy, false);
         Duck goalDuck = new Duck(0, maxEnergy, maxEnergy, true);
-        while (i < numDucks){
-            if(i != flagDuck){
+        while (i < numDucks) {
+            if (i != flagDuck) {
                 allDucks.add(newDuck);
-            }
-            else{
+            } else {
                 allDucks.add(goalDuck);
             }
             i++;
         }
         int cost = 0;
         myNode initNode = new myNode(allDucks, null, cost);
-        if (initNode.isGoalNode(flagDuck, numPos)){
+        if (initNode.isGoalNode(flagDuck, numPos)) {
             System.out.println("Goal found");
             return initNode;
         }
@@ -30,14 +30,15 @@ public class BestFirstSearch {
         myNode clone = initNode.cloneNode(initNode);
         reached.add(clone);
         frontier.add(clone);
-        while (!frontier.isEmpty()){
+        while (!frontier.isEmpty()) {
             myNode newNode = frontier.poll();
 
-            for (myNode x : newNode.expand(newNode, newNode.getDucks(), numPos)){
-                if (x.isGoalNode(flagDuck, numPos)){
+            for (myNode x : newNode.expand(newNode, newNode.getDucks(), numPos)) {
+                if (x.isGoalNode(flagDuck, numPos)) {
+                    System.out.println(x.traceMoves());
                     return x;
                 }
-                if (!reached.contains(x)){
+                if (!reached.contains(x)) {
                     reached.add(x);
                     frontier.add(x);
                 }
@@ -46,7 +47,7 @@ public class BestFirstSearch {
         return null;
     }
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter the number of ducks: ");
         int numDucks = scanner.nextInt();
@@ -58,14 +59,12 @@ public class BestFirstSearch {
         int maxEnergy = scanner.nextInt();
 
         myNode x = search(numDucks, numPos, flagDuck, maxEnergy);
-        if (x == null){
+        if (x == null) {
             System.out.println("No solution found");
-        }
-        else{
+        } else {
             System.out.println(x.toString());
         }
 
         scanner.close();
     }
 }
-
