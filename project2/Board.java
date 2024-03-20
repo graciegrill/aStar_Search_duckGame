@@ -25,6 +25,82 @@ public class Board
   private JLabel[] colLabels; // the labels that indicate which column to play in
   private JLabel[] rowLabels; // the labels to indicate the row to play in
   private Cell[][] cells; // the grid of numbers
+
+  public Player getRowP() {
+    return this.rowP;
+  }
+
+  public void setRowP(Player rowP) {
+    this.rowP = rowP;
+  }
+
+  public Player getColP() {
+    return this.colP;
+  }
+
+  public void setColP(Player colP) {
+    this.colP = colP;
+  }
+
+  public boolean isIsRowsTurn() {
+    return this.isRowsTurn;
+  }
+
+  public boolean getIsRowsTurn() {
+    return this.isRowsTurn;
+  }
+
+  public void setIsRowsTurn(boolean isRowsTurn) {
+    this.isRowsTurn = isRowsTurn;
+  }
+
+  public int getCurrentRow() {
+    return this.currentRow;
+  }
+
+  public void setCurrentRow(int currentRow) {
+    this.currentRow = currentRow;
+  }
+
+  public int getCurrentCol() {
+    return this.currentCol;
+  }
+
+  public void setCurrentCol(int currentCol) {
+    this.currentCol = currentCol;
+  }
+
+  public JLabel[] getColLabels() {
+    return this.colLabels;
+  }
+
+  public void setColLabels(JLabel[] colLabels) {
+    this.colLabels = colLabels;
+  }
+
+  public JLabel[] getRowLabels() {
+    return this.rowLabels;
+  }
+
+  public void setRowLabels(JLabel[] rowLabels) {
+    this.rowLabels = rowLabels;
+  }
+
+  public Cell[][] getCells() {
+    return this.cells;
+  }
+
+  public void setCells(Cell[][] cells) {
+    this.cells = cells;
+  }
+
+  public JLabel getMessageLabel() {
+    return this.messageLabel;
+  }
+
+  public void setMessageLabel(JLabel messageLabel) {
+    this.messageLabel = messageLabel;
+  }
   private JLabel messageLabel; // label for turn information, winner
   public Board(int size, Player rp, Player cp, int min, int max, Random rand) {
 	  // Constructor
@@ -84,6 +160,32 @@ public class Board
     this.add(messageLabel);
   }
   
+  public Board(Player rp, Player cp, boolean turn, int row, int col, JLabel[] clabels, JLabel[] rlabels, Cell[][] c, JLabel mlabel) {
+		rowP = rp;
+		colP = cp;
+		isRowsTurn = turn;
+		currentRow = row;
+		currentCol = col;
+		colLabels = clabels;
+		rowLabels = rlabels;
+		cells = c;
+		messageLabel = mlabel;
+	}
+	public Board clone() {
+		Player rp = rowP.clone();
+		Player cp = colP.clone();
+		Cell[][] c = cells.clone();
+		Board b = new Board(rp, cp, isRowsTurn, currentRow, currentCol, colLabels, rowLabels, c, messageLabel);
+		for(int i=0; i<cells.length; i++) {
+	        for(int j=0; j<cells[i].length; j++) {
+	            c[i][j].setBoard(b);
+	        }
+	    }
+		rp.setBoard(b);
+		cp.setBoard(b);
+		return b;
+	}
+	
   public void nextTurn()
   // This method sets up the next player's turn
   {
@@ -95,7 +197,23 @@ public class Board
 			  colP.takeTurn();
 	  }
   }
-
+  public int makeComputerChoice()
+  // This method determines the square the computer player will move to
+  // It returns the row or column of the move as appropriate
+  // You will replace this code - right now, it makes a random legal move in the
+  // appropriate row or column
+    {
+      
+    Random rand = new Random();
+    int answer;
+    if (isRowsTurn)
+    while (cells[currentRow][answer =
+    rand.nextInt(rowLabels.length)].isSelected());
+    else
+    while (cells[answer = rand.nextInt(rowLabels.length)]
+    [currentCol].isSelected());
+    return answer;
+    }
   public void makeComputerMove()
   // This performs the move for the computer player
   // After determining what the move should be, it executes that move on the board
@@ -123,22 +241,7 @@ public class Board
 	  nextTurn(); // have the next player go
   }
   
-  public int makeComputerChoice()
-  // This method determines the square the computer player will move to
-  // It returns the row or column of the move as appropriate
-  // You will replace this code - right now, it makes a random legal move in the 
-  // appropriate row or column
-  {
-	  Random rand = new Random();
-	  int answer;
-	  if (isRowsTurn)
-		  while (cells[currentRow][answer = rand.nextInt(rowLabels.length)].isSelected());
-	  else
-		  while (cells[answer = rand.nextInt(rowLabels.length)][currentCol].isSelected());
-	  return answer;
-		  
-	  	
-  }
+  
   public boolean makeMove(int row, int col, int val)
   // Execute move made by player
   // row, col - coordinates of selected square

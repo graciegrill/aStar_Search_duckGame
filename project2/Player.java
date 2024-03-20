@@ -23,6 +23,15 @@ public class Player
     scoreLabel = new JLabel(""+score, JLabel.LEFT);
     this.add(scoreLabel);
   }
+  public Player(String n, int s, boolean comp, JLabel sl) {
+		name = n;
+		score = s;
+		isComputer = comp;
+		scoreLabel = sl;
+	}
+	public Player clone() {
+		return new Player(name, score, isComputer, scoreLabel);
+	}
   public void setBoard(Board b)
   { // set the link to the board
 	  theBoard = b;

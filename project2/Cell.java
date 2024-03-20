@@ -10,6 +10,41 @@ public class Cell
     extends JButton {
   private int value; // number in the cell
   private boolean selected; // have we picked it already?
+  public void setValue(int value) {
+    this.value = value;
+  }
+
+  public boolean getSelected() {
+    return this.selected;
+  }
+
+  public void setSelected(boolean selected) {
+    this.selected = selected;
+  }
+
+  public int getRow() {
+    return this.row;
+  }
+
+  public void setRow(int row) {
+    this.row = row;
+  }
+
+  public int getCol() {
+    return this.col;
+  }
+
+  public void setCol(int col) {
+    this.col = col;
+  }
+
+  public Board getBrd() {
+    return this.brd;
+  }
+
+  public void setBrd(Board brd) {
+    this.brd = brd;
+  }
   private int row; // coordinates of the cell on the board
   private int col;
   private Board brd; // the Board object it is part of
@@ -28,6 +63,19 @@ public class Cell
     this.addActionListener(new CellListener()); // set up to be clicked
     this.setVisible(true);
   }
+  public Cell(int val, boolean sel, int r, int c) {
+		value = val;
+		selected = sel;
+		row = r;
+		col = c;
+	}
+	public void setBoard(Board b) {
+		brd = b;
+	}
+	public Cell clone() {
+		return new Cell(value, selected, row, col);
+	}
+	
   public boolean isSelected() { return selected; } // accessors
   public int getValue() { return value; }
   public void select() // mark as selected; change the text too
