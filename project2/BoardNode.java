@@ -1,78 +1,39 @@
-import java.util.List;
+package project2;
+
 import java.util.ArrayList;
+
 public class BoardNode {
-    
-    
-    private Board state;
-    private BoardNode parentNode;
-    private ArrayList<BoardNode> children;
-
-    public ArrayList<BoardNode> getChildren() {
-        return this.children;
-    }
-
-    public void setChildren(ArrayList<BoardNode> children) {
-        this.children = children;
-    }
-
-    public BoardNode(Board state, BoardNode parentNode, ArrayList<BoardNode> children) {
-        this.state = state;
-        this.parentNode = parentNode;
-        this.children = leaves();
-
-    }
-
-    public Board getState() {
-        return this.state;
-    }
-
-    public void setState(Board state) {
-        this.state = state;
-    }
-
-    public BoardNode getParentNode() {
-        return this.parentNode;
-    }
-
-    public void setParentNode(BoardNode parentNode) {
-        this.parentNode = parentNode;
-    }
-
-    public ArrayList<BoardNode> leaves(){
-        ArrayList<BoardNode> frontier = new ArrayList<BoardNode>();
-        for (BoardNode b:this.children){
-            if(b.getState().getIsRowsTurn())
-                for(int i = 0; i< b.getState().getCells().length; i++){
-                    Board newState = state.clone();
-                    if(newState.makeMove(newState.getCurrentRow(), i, newState.getCells()[newState.getCurrentRow()][i].getValue())){ //row column
-                        BoardNode newNode = new BoardNode(newState,b );
-                        frontier.add(newNode);
-                        b.children.add(newNode);
-                    }
-                }
-            else{
-                for(int i = 0; i< b.getState().getCells().length; i++){
-                    Board newState = state.clone();
-                    if(newState.makeMove(i, newState.getCurrentCol(),  newState.getCells()[i][newState.getCurrentCol()].getValue())){ //row column
-                        BoardNode newNode = new BoardNode(newState,b );
-                        frontier.add(newNode);
-                        b.children.add(newNode);
-                    }
-
-                }
-
-    }
-}
-            return frontier;
-    }
-    public int alphabeta(BoardNode node, int depth, int alpha, int beta, boolean minimax) {
+	private BoardNode parent;
+	private Board state;
+	private ArrayList<BoardNode> children;
+	
+	public BoardNode(BoardNode parent, Board state) {
+		this.parent = parent;
+		this.state = state;
+		this.children = generateChildren();
+	}
+	public BoardNode(BoardNode parent, Board state, ArrayList<BoardNode> children) {
+		this.parent = parent;
+		this.state = state;
+		this.children = children;
+	}
+	
+	public int value() {
+		return 1; 
+	}
+	
+	public int alphabeta() {
+		return alphabeta(this, 30, Integer.MAX_VALUE, Integer.MIN_VALUE, true);
+	}
+	
+	public int alphabeta(BoardNode node, int depth, int alpha, int beta, boolean minimax) {
 		if (depth == 0 || node.state.gameOver()) {
 			return node.value();
 		}
 		if (minimax) {
 			int value = Integer.MIN_VALUE;
 			for (int i = 0; i < node.children.size(); i++) {
-				value = Math.max(value, alphabeta(node.leaves().get(i), depth-1, alpha, beta, false));
+				value = Math.max(value, alphabeta(node.children.get(i), depth-1, alpha, beta, false));
 				if (value > beta) {
 					break;
 				}
@@ -82,7 +43,7 @@ public class BoardNode {
 		} else {
 			int value = Integer.MAX_VALUE;
 			for (int i = 0; i < node.children.size(); i++) {
-				value = Math.min(value, alphabeta(node.leaves().get(i), depth-1, alpha, beta, true));
+				value = Math.min(value, alphabeta(node.children.get(i), depth-1, alpha, beta, true));
 				if (value < alpha) {
 					break;
 				}
@@ -91,18 +52,52 @@ public class BoardNode {
 			return value;
 		}
 	}
-
-    public int value(){
-        int val = 0;
-        if(this.state.getIsRowsTurn()){
-            
-
-        }
-        else{
-
-        }
-        return 1;
-    }
-    
-    
+	
+	public ArrayList<BoardNode> generateChildren() {
+		ArrayList<BoardNode> children = new ArrayList<BoardNode>();
+		if (this.state.isRowsTurn()) {
+			for (int i = 0; i < this.state.getCells().length; i++) {
+				Board newState = state.clone();
+				if(newState.canMakeMove(newState.getCurrentRow(), i)) {
+					newState.makeMove(newState.getCurrentRow(), i);
+					BoardNode newnode = new BoardNode(this, newState);
+					children.add(newnode);
+				}
+			}
+		} else {
+			for (int i = 0; i < this.state.getCells().length; i++) {
+				Board newState = state.clone();
+				if(newState.canMakeMove(i, newState.getCurrentCol())) {
+					newState.makeMove(i, newState.getCurrentRow());
+					BoardNode newnode = new BoardNode(this, newState);
+					children.add(newnode);
+				}
+			}
+		}
+		return children;
+	}
+	
+	public BoardNode getParent() {
+		return this.parent;
+	}
+	public ArrayList<BoardNode> getChildren() {
+		return this.children;
+	}
+	public Board getState() {
+		return this.state;
+	}
+	public void setParent(BoardNode parent) {
+		this.parent = parent;
+	}
+	public void setChildren(ArrayList<BoardNode> children) {
+		this.children = children;
+	}
+	public void setState(Board state) {
+		this.state = state;
+	}	
+	@SuppressWarnings("unchecked")
+	public BoardNode clone() {
+		ArrayList<BoardNode> c = (ArrayList<BoardNode>) this.children.clone();
+		return new BoardNode(this.parent.clone(), this.state.clone(), c);
+	}
 }
