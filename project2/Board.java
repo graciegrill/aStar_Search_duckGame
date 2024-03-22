@@ -25,15 +25,11 @@ public class Board extends JPanel {
 	private Cell[][] cells; // the grid of numbers
 	private JLabel messageLabel; // label for turn information, winner
 	
-	public boolean isRowsTurn() {
-		return this.isRowsTurn;
-	}
-	public int getCurrentRow() {
-		return this.currentRow;
-	}
-	public int getCurrentCol() {
-		return this.currentCol;
-	}
+	public boolean isRowsTurn() {return this.isRowsTurn;}
+	public int getCurrentRow() {return this.currentRow;}
+	public int getCurrentCol() {return this.currentCol;}
+	public Player getRowPlayer() {return this.rowP;}
+	public Player getColPlayer() {return this.colP;}
 	
 	public Board(int size, Player rp, Player cp, int min, int max, Random rand) {
 		// Constructor
@@ -145,8 +141,52 @@ public class Board extends JPanel {
 	// You will replace this code - right now, it makes a random legal move in the
 	// appropriate row or column
 	{
+		if (isRowsTurn && rowP.getScore() > colP.getScore()) { //if it is row's turn, and row's score is higher than col's score
+			int move = -1; //initialising move so that we can return in later
+			boolean foundMove = false; //boolean for if we have found a move for us to make
+			boolean isMove = false; //boolean to find out if there is a move in a given column for the column player
+			
+			for (int i = 0; i < this.cells[0].length; i++) { //looping through the row
+				if (!this.cells[currentRow][i].isSelected()) { //if the cell we are looking at is not already selected
+					for (int j = 0; j < this.cells.length; j++) { //loop through the column options for that cell
+						if (!this.cells[j][i].isSelected() && j != currentRow) //if any of the cells are not selected
+							isMove = true; //there is a move in that column
+					}
+					move = i; //set move to i
+					if (!isMove && rowP.getScore()+this.cells[currentRow][i].getValue() > colP.getScore()) { 
+						//if isMove remained false, and the value in this cell does not bring our score lower than col's
+						foundMove = true; //then we have found our move
+						break; //and we can break the loop
+					}
+				}
+			}
+			if (foundMove) //if we found our move
+				return move; //then return it
+		}
+		if (!isRowsTurn && rowP.getScore() < colP.getScore()) { //if it is col's turn, and col's score is higher than row's score
+			int move = -1; //initialising move so that we can return in later
+			boolean foundMove = false; //boolean for if we have found a move for us to make
+			boolean isMove = false; //boolean to find out if there is a move in a given row for the row player
+			
+			for (int i = 0; i < this.cells.length; i++) { //looping through the column
+				if (!this.cells[i][currentCol].isSelected()) { //if the cell we are looking at is not already selected
+					for (int j = 0; j < this.cells.length; j++) { //loop through the row options for that cell
+						if (!this.cells[i][j].isSelected() && j != currentCol) //if any of the cells are not selected
+							isMove = true; //there is a move in that row
+					}
+					move = i; //set move to i
+					if (!isMove && rowP.getScore() < colP.getScore()+this.cells[i][currentCol].getValue()) {
+						//if isMove remained false, and the value in this cell does not bring our score lower than col's
+						foundMove = true; //then we have found our move
+						break; //and we can break the loop
+					}
+				}
+			}
+			if (foundMove) //if we found our move
+				return move; //then return it
+		}
+		/*
 		BoardNode b = new BoardNode(null, clone());
-		int move = -1;
 		
 		if (isRowsTurn) {
 			for (int i = 0; i < this.cells.length; i++) {
@@ -161,8 +201,7 @@ public class Board extends JPanel {
 		}
 		
 		return move;
-		
-		/*
+		*/
 		Random rand = new Random();
 		int answer;
 		if (isRowsTurn)
@@ -172,7 +211,6 @@ public class Board extends JPanel {
 			while (cells[answer = rand.nextInt(rowLabels.length)]
 					[currentCol].isSelected());
 		return answer;
-		*/
 	}
 	public boolean makeMove(int row, int col)
 	// Execute move made by player
