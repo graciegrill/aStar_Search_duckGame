@@ -21,16 +21,16 @@ public class Player extends JPanel {
 		scoreLabel = new JLabel(""+score, JLabel.LEFT);
 		this.add(scoreLabel);
 	}
-	public Player(String n, int s, boolean comp, JLabel sl) {
+	public Player(String n, int s, boolean comp) {
 		name = n;
 		score = s;
 		isComputer = comp;
-		scoreLabel = sl;
 	}
 	public void setBoard(Board b)
 	{ // set the link to the board
 		theBoard = b;
 	}
+	public String getName() { return this.name; }
 	public void addToScore(int s)
 	{
 		// update player's score
@@ -60,9 +60,12 @@ public class Player extends JPanel {
 		if (isComputer)
 			theBoard.makeComputerMove(); // board manages computer players
 		else
-			theBoard.setMessage("Go,"+name); // humans click when they feel like it
+			theBoard.setMessage("Go, "+name); // humans click when they feel like it
 	}
 	public Player clone() {
-		return new Player(name, score, isComputer, scoreLabel);
+		return new Player(name, score, isComputer);
+	}
+	public void addScore(int s){
+		score+=s;
 	}
 }

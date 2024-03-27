@@ -1,4 +1,3 @@
-package project2;
 
 /*
  * Take That!
@@ -9,7 +8,6 @@ package project2;
 import javax.swing.*;
 import java.awt.*;
 import java.util.Random;
-@SuppressWarnings("serial")
 public class Game extends JFrame {
 	/**
 	 * 

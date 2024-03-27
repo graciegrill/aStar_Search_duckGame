@@ -1,4 +1,3 @@
-package project2;
 
 import java.util.ArrayList;
 
@@ -8,7 +7,7 @@ public class BoardNode {
 	private ArrayList<BoardNode> children;
 	
 	public BoardNode(BoardNode parent, Board state) {
-		this.parent = parent;
+		this.parent = null;
 		this.state = state;
 		this.children = generateChildren();
 	}
@@ -19,11 +18,27 @@ public class BoardNode {
 	}
 	
 	public int value() {
-		return 1; 
+		//value of move
+		int value = 0;
+		int max = 0;
+		int max1 = 0;
+		if(this.state.isRowsTurn()){
+			max = this.state.getMaxInRow(this.state.getCurrentRow());
+			max1 = this.state.getMaxInCol(this.state.getCurrentCol());
+			value = max - max1;
+		}
+		else{
+			max = this.state.getMaxInCol(this.state.getCurrentCol());
+			max1 = this.state.getMaxInCol(this.state.getCurrentCol());
+			value = max1- max;
+
+		}
+		return 1;
+		
 	}
 	
 	public int alphabeta() {
-		return alphabeta(this, 30, Integer.MAX_VALUE, Integer.MIN_VALUE, true);
+		return alphabeta(this, 4, Integer.MAX_VALUE, Integer.MIN_VALUE, true);
 	}
 	
 	public int alphabeta(BoardNode node, int depth, int alpha, int beta, boolean minimax) {
@@ -95,9 +110,8 @@ public class BoardNode {
 	public void setState(Board state) {
 		this.state = state;
 	}	
-	@SuppressWarnings("unchecked")
 	public BoardNode clone() {
-		ArrayList<BoardNode> c = (ArrayList<BoardNode>) this.children.clone();
+		ArrayList<BoardNode> c =  new ArrayList<BoardNode>();
 		return new BoardNode(this.parent.clone(), this.state.clone(), c);
 	}
 }
