@@ -5,6 +5,7 @@ public class BoardNode {
 	private BoardNode parent;
 	private Board state;
 	private ArrayList<BoardNode> children;
+	private int depth =4;
 
 	
 	public BoardNode(Board state) {
@@ -15,32 +16,48 @@ public class BoardNode {
 		this.parent = parent;
 		this.state = state;
 	}
-	public BoardNode(BoardNode parent, Board state, ArrayList<BoardNode> children) {
-		this.parent = parent;
-		this.state = state;
-		this.children = children;
-	}
+
 	
 	public int value() {
 		//int value = 0;
 		int max = 0;
-		if (this.state.isRowsTurn()) {
+		BoardNode p1 = this;
+		for (int i = 0; i<this.depth; i++){
+			p1 = p1.getParent();
+		}
+		if (p1.getState().isRowsTurn()){
+			
+		}
+		/* if (this.state.isRowsTurn()) {
 			max = this.state.maxValueInRow(this.state.getCurrentRow());
 		} else {
 			max = this.state.maxValueInCol(this.state.getCurrentCol());
-		}
+		} */
 		return max;
 	}
 	
-	public int alphabeta() {
-		return alphabeta(this, 1, Integer.MIN_VALUE, Integer.MAX_VALUE, true).move;
+	public int alphabeta(boolean Player) {
+		return alphabeta(this, 4, Integer.MIN_VALUE, Integer.MAX_VALUE, true, Player).move;
 	}
 	
-	public Move alphabeta(BoardNode node, int depth, int alpha, int beta, boolean minimax) {
+	public Move alphabeta(BoardNode node, int depth, int alpha, int beta, boolean minimax, boolean Player) {
 		long start = System.currentTimeMillis();
     	long maxDuration = 10000; // Maximum duration in milliseconds (10 seconds)
 		if (depth == 0 || node.state.gameOver() || System.currentTimeMillis() - start > maxDuration) {
 			Move v = new Move();
+			if (node.state.gameOver() && ((Player && node.state.getRowPlayer().getScore() <= node.state.getColPlayer().getScore()) || 
+                    (!Player && node.state.getColPlayer().getScore() <= node.state.getRowPlayer().getScore()))) {
+                v.value = -10000;
+            } else if (node.state.gameOver() && ((Player && node.state.getRowPlayer().getScore() > node.state.getColPlayer().getScore()) || 
+                    (!Player && node.state.getColPlayer().getScore() > node.state.getRowPlayer().getScore()))) {
+                v.value = 10000;
+            }
+			if(this.getState().isRowsTurn()){
+				v.move = node.getState().maxLocInRow(node.getState().getCurrentRow());
+			}
+			else{
+				v.move = node.getState().maxLocInCol(node.getState().getCurrentCol());
+			}
 			v.value = node.value();
 			return v;
 		}
@@ -49,10 +66,16 @@ public class BoardNode {
 			v.value = Integer.MIN_VALUE;
 			node.children = generateChildren(depth);
 			for (int i = 0; i < node.children.size(); i++) {
-				Move childMove = alphabeta(node.children.get(i), depth-1, alpha, beta, false);
+				Move childMove = alphabeta(node.children.get(i), depth-1, alpha, beta, false, Player);
         if (v.value < childMove.value) {
             v.value = childMove.value;
-            v.move = i; // Set the move index or identifier
+			if(node.getChildren().get(i).getState().isRowsTurn()){
+            v.move = node.getChildren().get(i).getState().getCurrentRow(); // Set the move index or identifier
+			}
+			else{
+				v.move = node.getChildren().get(i).getState().getCurrentCol();
+
+			}
         }
 				if (v.value > beta) {
 					break;
@@ -65,7 +88,7 @@ public class BoardNode {
 			v.value = Integer.MAX_VALUE;
 			node.children = generateChildren(depth);			
 			for (int i = 0; i < node.children.size(); i++) {
-				Move childMove = alphabeta(node.children.get(i), depth-1, alpha, beta, true);
+				Move childMove = alphabeta(node.children.get(i), depth-1, alpha, beta, true, Player);
         if (v.value > childMove.value) {
             v.value = childMove.value;
             v.move = i; // Set the move index or identifier
@@ -125,8 +148,4 @@ public class BoardNode {
 		this.state = state;
 	}	
 	
-	public BoardNode clone() {
-		ArrayList<BoardNode> c = new ArrayList<BoardNode>();
-		return new BoardNode(this.parent.clone(), this.state.clone(), c);
-	}
 }

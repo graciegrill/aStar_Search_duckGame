@@ -5,7 +5,6 @@ import java.util.Random;
 /*
  * This class represents one square on the Take That! board.
  */
-@SuppressWarnings("serial")
 public class Cell extends JButton {
 	private int value; // number in the cell
 	private boolean selected; // have we picked it already?

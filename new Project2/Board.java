@@ -13,7 +13,6 @@ state.
 import javax.swing.*;
 import java.awt.*;
 import java.util.Random;
-@SuppressWarnings("serial")
 public class Board extends JPanel {
 	private Player rowP; // the two players
 	private Player colP;
@@ -138,7 +137,7 @@ public class Board extends JPanel {
 	// appropriate row or column
 	{
 		BoardNode b = new BoardNode(clone());
-		int g = b.alphabeta();
+		int g = b.alphabeta(isRowsTurn());
 		System.out.println(g);
 		return  g;//b.alphabeta();
 		
@@ -291,6 +290,35 @@ public class Board extends JPanel {
 		return value;
 	}
 	
+	public int maxLocInCol(int n) {
+		int value = Integer.MIN_VALUE;
+		int loc = 0;
+		for (int i = 0; i < this.cells.length; i++) {
+			if (!this.cells[i][n].isSelected()) {
+				if(value<this.cells[i][n].getValue()){
+					loc = i;
+					value = this.cells[i][n].getValue();
+				}
+
+			}
+		}
+		return loc;
+	}
+	
+	public int maxLocInRow(int n) {
+		int value = Integer.MAX_VALUE;
+		int loc = 0;
+		for (int i = 0; i < this.cells.length; i++) {
+			if (!this.cells[n][i].isSelected()) {
+				if(value<this.cells[n][i].getValue()){
+					loc = i;
+					value = this.cells[n][i].getValue();
+				}
+
+			}
+		}
+		return loc;
+	}
 	public int minValueInCol(int n) {
 		int value = 0;
 		for (int i = 0; i < this.cells.length; i++) {
