@@ -26,6 +26,7 @@ public class Cell extends JButton {
 		this.addActionListener(new CellListener()); // set up to be clicked
 		this.setVisible(true);
 	}
+	//Constructor for clone
 	public Cell(int val, boolean sel, int r, int c) {
 		value = val;
 		selected = sel;
@@ -61,6 +62,7 @@ public class Cell extends JButton {
 			}
 		}
 	}
+	//cell clone method
 	public Cell clone() {
 		return new Cell(value, selected, row, col);
 	}

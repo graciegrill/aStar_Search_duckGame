@@ -21,6 +21,7 @@ public class Player extends JPanel {
 		scoreLabel = new JLabel(""+score, JLabel.LEFT);
 		this.add(scoreLabel);
 	}
+	//constructor for clone
 	public Player(String n, int s, boolean comp) {
 		name = n;
 		score = s;
@@ -62,9 +63,11 @@ public class Player extends JPanel {
 		else
 			theBoard.setMessage("Go, "+name); // humans click when they feel like it
 	}
+	//clone the player
 	public Player clone() {
 		return new Player(name, score, isComputer);
 	}
+	//add score to player's score
 	public void addScore(int s){
 		score+=s;
 	}

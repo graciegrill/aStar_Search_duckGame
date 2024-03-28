@@ -130,6 +130,7 @@ public class Board extends JPanel {
 		}
 		nextTurn(); // have the next player go
 	}
+	//Replaced with alpha beta call
 	public int makeComputerChoice()
 	// This method determines the square the computer player will move to
 	// It returns the row or column of the move as appropriate
@@ -139,30 +140,9 @@ public class Board extends JPanel {
 		BoardNode b = new BoardNode(clone());
 		int g = b.alphabeta(isRowsTurn());
 		System.out.println(g);
-		return  g;//b.alphabeta();
+		return  g;
 		
-		/* if (isRowsTurn) {
-			for (int i = 0; i < this.cells.length; i++) {
-				if (cells[currentRow][i].getValue() == b.alphabeta())
-					move = i;
-			}
-		} else {
-			for (int i = 0; i < this.cells[0].length; i++) {
-				if (cells[i][currentCol].getValue() == b.alphabeta())
-					move = i;
-			}
-		} */		
-		/*
-		Random rand = new Random();
-		int answer;
-		if (isRowsTurn)
-			while (cells[currentRow][answer =
-			rand.nextInt(rowLabels.length)].isSelected());
-		else
-			while (cells[answer = rand.nextInt(rowLabels.length)]
-					[currentCol].isSelected());
-		return answer;
-		*/
+		
 	}
 	public boolean makeMove(int row, int col)
 	// Execute move made by player
@@ -201,6 +181,9 @@ public class Board extends JPanel {
 		else
 			return false;
 	}
+	/*
+	 * Isolated verion of make move for expand function that eliminates certain aspects of the board GUI so that this works effectively
+	 */
 	public boolean makeIsolatedMove(int row, int col)
 	// Execute move made by player
 	// row, col - coordinates of selected square
@@ -227,6 +210,7 @@ public class Board extends JPanel {
 		else
 			return false;
 	}
+	//determines if a move can be made at all
 	public boolean canMakeMove(int row, int col) {
 		return (isRowsTurn && row==currentRow) || (!isRowsTurn && col==currentCol);
 	}
@@ -259,7 +243,7 @@ public class Board extends JPanel {
 	public Cell[][] getCells() {
 		return this.cells;
 	}
-	
+	//Gets the max value in a particular row
 	public int maxValueInRow(int n) {
 		int value = 0;
 		for (int i = 0; i < this.cells.length; i++) {
@@ -269,7 +253,7 @@ public class Board extends JPanel {
 		}
 		return value;
 	}
-	
+	//Gets the max value in a particular column
 	public int maxValueInCol(int n) {
 		int value = 0;
 		for (int i = 0; i < this.cells.length; i++) {
@@ -279,7 +263,7 @@ public class Board extends JPanel {
 		}
 		return value;
 	}
-	
+	//This gets the minimum value in a row
 	public int minValueInRow(int n) {
 		int value = 0;
 		for (int i = 0; i < this.cells.length; i++) {
@@ -289,7 +273,7 @@ public class Board extends JPanel {
 		}
 		return value;
 	}
-	
+	//This gets the location of a maximum in a column
 	public int maxLocInCol(int n) {
 		int value = Integer.MIN_VALUE;
 		int loc = 0;
@@ -304,7 +288,7 @@ public class Board extends JPanel {
 		}
 		return loc;
 	}
-	
+	//This gets the maxiumum location in a row.
 	public int maxLocInRow(int n) {
 		int value = Integer.MAX_VALUE;
 		int loc = 0;
@@ -319,6 +303,7 @@ public class Board extends JPanel {
 		}
 		return loc;
 	}
+	//This gets the minimum value in a column
 	public int minValueInCol(int n) {
 		int value = 0;
 		for (int i = 0; i < this.cells.length; i++) {
@@ -328,7 +313,7 @@ public class Board extends JPanel {
 		}
 		return value;
 	}
-	
+	//This clones every aspect of a board
 	public Board clone() {
 		Player rp = rowP.clone();
 		Player cp = colP.clone();
